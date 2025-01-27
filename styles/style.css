@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-light : #faf6f7;
+    --bg-dark : #121212;
+    --txt-light : #fff;
+    --txt-dark : #000;
+    --fg-color : #d32c60;
+    --bg-overlay : rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--txt-light);
+}
+
+textarea {
+    resize: none;
+}
+
+#filters {
+    display: flex; 
+    margin: 10px;
+}
+
+.filter {
+    padding: 2px;
+}
+
+.overlay {
+    z-index: 10;
+    background-color: var(--bg-overlay);
+}
+
+.spread {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.strikeOut {
+    text-decoration: line-through;
+}
+
+#tasks {
+    width: 90%;
+    margin: auto;
+    padding: 10px;
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.task > .main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;    
+    overflow: hidden;
+}
+
+.task > .main > .taskTextContent {
+    font-size: 20px;
+    font-family: Montserrat;
+    width: 75%;
+}
+.task > .main > .actions {
+    display: flex;
+    justify-content: space-evenly;
+    width: 20%;
+}
+.task > .main > .tick {
+    width: 5%;
+}
+.task > .main > .tick > input {
+    width: 20px;
+    height: 20px;
+}
+
+.task {
+    border : 2.5px solid #cccccc27;
+    padding: 2px;   
+}
+
+.task > .slide {
+    display: none;
+}
+
