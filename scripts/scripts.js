@@ -4,6 +4,7 @@ const taskForm = document.forms.taskForm;
 const wrapper = document.getElementById("wrapper")
 let taskList = {};
 let id = 0;
+console.log(taskList)
 
 
 const taskObjectBuilder = () => {
@@ -120,8 +121,10 @@ const addTask = (event) => {
 
     const task = taskObjectBuilder();
     addTaskToUI(task)
+	console.log(task)
+console.log(taskList)
     // Object.assign(taskList,{ 
-    //     [`task_${task.id}`] : task 
+    //    [`task_${task.id}`] : task 
     // })
     taskList[`task_${task.id}`] = task
     console.log(taskList);    
@@ -226,7 +229,7 @@ window.addEventListener("beforeunload", (event) => {
 document.addEventListener("DOMContentLoaded", (event) => {
     tasks.innerHTML = ""
     id = localStorage.getItem("id") || 1
-    taskList = JSON.parse(localStorage.getItem("taskList"));
+    taskList = JSON.parse(localStorage.getItem("taskList")) || {};
     for (let task in taskList) {
         addTaskToUI(taskList[task])
     }
