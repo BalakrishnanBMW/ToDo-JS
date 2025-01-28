@@ -78,23 +78,26 @@ const addTaskToUI = (taskObject) => {
 
     const actions = document.createElement("div")
     actions.classList.add("actions")
+
     const expandBtn = document.createElement("button")
     expandBtn.classList.add("expandButton")
+    expandBtn.addEventListener("click", expandNote)
     const expandIcon = document.createElement("i")
-    expandIcon.classList.add("fa", "fa-chevron-down")
+    expandIcon.classList.add("fa", "fa-chevron-down", "icon")
     expandBtn.append(expandIcon)
+
     const editBtn = document.createElement("button")
     editBtn.classList.add("editButton")
     editBtn.addEventListener("click", editTask)
     const editIcon = document.createElement("i")
-    editIcon.classList.add("fa", "fa-pencil-square-o")
+    editIcon.classList.add("fa", "fa-pencil-square-o", "icon")
     editBtn.append(editIcon)
 
     const deleteBtn = document.createElement("button")
     deleteBtn.classList.add("deleteButton")
     deleteBtn.addEventListener("click", deleteTask)
     const deleteIcon = document.createElement("i")
-    deleteIcon.classList.add("fa", "fa-trash")
+    deleteIcon.classList.add("fa", "fa-trash", "icon")
     deleteBtn.append(deleteIcon)
 
     actions.append(expandBtn)
@@ -106,6 +109,7 @@ const addTaskToUI = (taskObject) => {
     const p1 = document.createElement("p")
     p1.innerText = taskObject.note
     taskNoteContent.append(p1)
+    taskNoteContent.hidden = true;
 
     main.append(tick)
     main.append(taskTextContent)
@@ -116,13 +120,22 @@ const addTaskToUI = (taskObject) => {
     taskForm.reset()
 }
 
+const expandNote = (event) => {
+    const target = event.target;
+    const task = target.closest(".task");
+    const slide = task.querySelector(".taskNoteContent");
+    slide.hidden = !slide.hidden;
+    target.classList.toggle("fa-chevron-down")
+    target.classList.toggle("fa-chevron-up")
+}
+
 const addTask = (event) => {
     event.preventDefault();
 
     const task = taskObjectBuilder();
     addTaskToUI(task)
 	console.log(task)
-console.log(taskList)
+    console.log(taskList)
     // Object.assign(taskList,{ 
     //    [`task_${task.id}`] : task 
     // })

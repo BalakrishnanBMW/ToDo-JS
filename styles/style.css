@@ -11,6 +11,8 @@
     --txt-dark : #000;
     --fg-color : #d32c60;
     --bg-overlay : rgba(0, 0, 0, 0.5);
+    --outline : #cccccc50;
+    --txt-grey : #ccccccce;
 }
 
 body {
@@ -24,11 +26,23 @@ textarea {
 
 #filters {
     display: flex; 
-    margin: 10px;
+    margin: 0px auto;
+    width: 90%;
+    padding: 5px;
+    border-width: 2.5px 2.5px 0px 2.5px;
+    border-style: solid;
+    border-color: var(--outline);
 }
 
 .filter {
     padding: 2px;
+}
+.filter > button {
+    background-color: var(--outline);
+    border: 0px;
+    border-radius: 3px;
+    padding: 3px;
+    color: var(--txt-grey);
 }
 
 .overlay {
@@ -51,10 +65,10 @@ textarea {
 #tasks {
     width: 90%;
     margin: auto;
-    padding: 10px;
     height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
+    border : 2.5px solid var(--outline);
 }
 
 .task > .main {
@@ -75,20 +89,44 @@ textarea {
     justify-content: space-evenly;
     width: 20%;
 }
+.task > .main > .actions > button {
+    color: var(--fg-color);
+    font-size: 20px;
+    border: 0px;
+    background-color: transparent;
+}
+
 .task > .main > .tick {
     width: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .task > .main > .tick > input {
     width: 20px;
     height: 20px;
+    outline : 1px solid var(--fg-color);
+    cursor: pointer;
 }
 
 .task {
-    border : 2.5px solid #cccccc27;
-    padding: 2px;   
+    border-bottom : 2.5px solid var(--outline);
+    padding: 5px;  
 }
 
 .task > .slide {
-    display: none;
+    display: block;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+.task > .slide > .taskNoteContent {
+    background-color: var(--fg-color);
+    width: 75%;
+    padding: 5px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
 }
 
