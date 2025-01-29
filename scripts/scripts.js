@@ -2,6 +2,7 @@
 const tasks = document.getElementById("tasks")
 const taskForm = document.forms.taskForm;
 const wrapper = document.getElementById("wrapper")
+const syncBtn = document.getElementById("syncBtn");
 let taskList = {};
 let id = 0;
 console.log(taskList)
@@ -160,6 +161,21 @@ const deleteTask = (event) => {
 
 }
 
+const saveToLocalStorage = (event) => {
+    localStorage.setItem("taskList", JSON.stringify(taskList));
+    localStorage.setItem("id", id)
+    // event.preventDefault();
+}
+
+const getFromLocalStorage = (event) => {
+    tasks.innerHTML = ""
+    id = localStorage.getItem("id") || 1
+    taskList = JSON.parse(localStorage.getItem("taskList")) || {};
+    for (let task in taskList) {
+        addTaskToUI(taskList[task])
+    }
+}
+
 const editTask = (event) => {
     const target = event.target;
     const task = target.closest(".task")
@@ -224,6 +240,10 @@ const editTask = (event) => {
         overlay.remove();
     })
 }
+const syncData = () => {
+	saveToLocalStorage()
+	getFromLocalStorage()
+}
 
 const updateOnUI = (editTask, task) => {
     task.querySelector(".taskTextContent > p").innerText = editTask['task'];
@@ -232,19 +252,7 @@ const updateOnUI = (editTask, task) => {
 }
 
 taskForm.addEventListener("submit", addTask)
-
-window.addEventListener("beforeunload", (event) => {
-    localStorage.setItem("taskList", JSON.stringify(taskList));
-    localStorage.setItem("id", id)
-    // event.preventDefault();
-});
-
-document.addEventListener("DOMContentLoaded", (event) => {
-    tasks.innerHTML = ""
-    id = localStorage.getItem("id") || 1
-    taskList = JSON.parse(localStorage.getItem("taskList")) || {};
-    for (let task in taskList) {
-        addTaskToUI(taskList[task])
-    }
-})
+syncBtn.addEventListener("click", syncData)
+window.addEventListener("beforeunload", saveToLocalStorage)
+document.addEventListener("DOMContentLoaded", getFromLocalStorage)
 

@@ -130,3 +130,18 @@ textarea {
     font-family: 'Courier New', Courier, monospace;
 }
 
+nav {
+	display:flex;
+	justify-content : space-between;
+	align-items : center;
+	height : 50px;
+	padding : 10px;
+}
+
+nav > #optionBtn {
+	display : flex;
+}
+
+nav > #optionBtn > div {
+	padding : 3px;
+}
