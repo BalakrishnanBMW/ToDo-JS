@@ -3,6 +3,7 @@ const tasks = document.getElementById("tasks")
 const taskForm = document.forms.taskForm;
 const wrapper = document.getElementById("wrapper")
 const syncBtn = document.getElementById("syncBtn");
+const themeSelector = document.getElementById("themeSelector");
 let taskList = {};
 let id = 0;
 console.log(taskList)
@@ -251,6 +252,12 @@ const updateOnUI = (editTask, task) => {
 
 }
 
+function applyTheme(event) {
+	const theme = event.target.value;
+    document.documentElement.setAttribute("data-theme", theme);
+}
+
+themeSelector.addEventListener("change", applyTheme);
 taskForm.addEventListener("submit", addTask)
 syncBtn.addEventListener("click", syncData)
 window.addEventListener("beforeunload", saveToLocalStorage)
