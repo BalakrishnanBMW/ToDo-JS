@@ -6,7 +6,6 @@ const syncBtn = document.getElementById("syncBtn");
 const themeSelector = document.getElementById("themeSelector");
 let taskList = {};
 let id = 0;
-console.log(taskList)
 
 
 const taskObjectBuilder = () => {
@@ -30,13 +29,11 @@ const taskStatusUpdate = (event) => {
         // taskText.style.textDecoration = "line-through";
         taskText.classList.add("strikeOut")
         taskFromTaskList.status = "completed"
-        console.log("completed");
         
     } else {
         // taskText.style.textDecoration = "none";
         taskText.classList.remove("strikeOut")
         taskFromTaskList.status = "pending"
-        console.log("pending");
     }
 
 }
@@ -136,13 +133,10 @@ const addTask = (event) => {
 
     const task = taskObjectBuilder();
     addTaskToUI(task)
-	console.log(task)
-    console.log(taskList)
     // Object.assign(taskList,{ 
     //    [`task_${task.id}`] : task 
     // })
     taskList[`task_${task.id}`] = task
-    console.log(taskList);    
 }
 
 const removeFromUI = (target) => {
@@ -151,7 +145,6 @@ const removeFromUI = (target) => {
     
     task.remove()
     delete taskList[keyToRemove]
-    console.log(taskList);
 }
 
 const deleteTask = (event) => {
@@ -183,7 +176,6 @@ const editTask = (event) => {
     let keyToEdit = `task_${task.dataset.id}`
 
     const editTask = taskList[keyToEdit]
-    console.log(editTask)
     const taskText = editTask['task']
     const taskNote = editTask['note']
 
@@ -204,16 +196,20 @@ const editTask = (event) => {
     editTaskNote.setAttribute("id", "editTaskNote")
     editTaskNote.innerText = taskNote
     editTaskContainer.append(editTaskNote)
+	
+	const editActionButton = document.createElement("div");
+	editActionButton.id = "editActionButton"
+	editTaskContainer.append(editActionButton);
 
     const updateAction = document.createElement("button")
     updateAction.id = "updateAction"
     updateAction.innerText = "Update"
-    editTaskContainer.append(updateAction);
+    editActionButton.append(updateAction);
 
     const cancelAction = document.createElement("button")
     cancelAction.id = "cancelAction"
     cancelAction.innerText = "Cancel"
-    editTaskContainer.append(cancelAction); 
+    editActionButton.append(cancelAction); 
 
     updateAction.addEventListener("click", function() {
 

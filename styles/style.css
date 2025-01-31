@@ -4,6 +4,61 @@
     box-sizing: border-box;
 }
 
+#addTaskContainer > form {
+	display: flex;
+	justify-content : center;
+	align-items : center;
+	flex-direction : column;
+	padding : 10px;
+	width : 100%;
+	margin : auto;
+}
+
+#taskTextDiv, 
+#taskNoteDiv, 
+#actionButton,
+#editActionButton
+{
+	width : 50%;
+	min-width : 200px;
+	padding : 5px;
+}
+
+#taskTextDiv > input, #editTaskText {
+	padding : 5px;
+	font-size : 18px;
+	font-family : Roboto;
+	width : 100%;
+}
+#taskNoteDiv > textarea, #editTaskNote {
+	padding : 5px;
+	font-size : 18px;
+	font-family : Roboto;
+	width : 100%;
+	margin-bottom : 5px;
+}
+
+#actionButton, #editActionButton {
+	display : flex;
+	align-items : center;
+	justify-content : space-between;
+}
+#actionButton > button,
+#editActionButton > button
+{
+	font-size : 18px;	
+}
+
+.editTaskContainer {
+	width: 50%;
+	height: 100vh;
+	margin : auto;
+	display: flex;
+	justify-content : center;
+	align-items : center;
+	flex-direction : column;	
+}
+
 :root {
     /* Default (Light Theme) */
     --bg-color: #f4f7fb;
@@ -60,6 +115,13 @@ button {
     padding: 10px;
     border: none;
     cursor: pointer;
+	transition : 0.3s;
+}
+button:hover {
+    color: var(--button-bg);
+    background-color: var(--button-text);
+	box-shadow : 1px 1px 1px var(--button-bg), -1px -1px 1px var(--button-bg);
+	transition : 0.3s;
 }
 
 textarea {
@@ -111,7 +173,6 @@ textarea {
     justify-content: space-between;
     align-items: center;
     width: 100%;    
-    overflow: hidden;
 	background-color : var(--task-bg);
 }
 
@@ -184,4 +245,13 @@ nav > #optionBtn > div {
     border: none;
     cursor: pointer;
 	outline : none;
+}
+
+footer {
+	display:flex;
+	justify-content : center;
+	align-items : center;
+	height : 50px;
+	padding : 10px;
+	border-top : 2px solid var(--button-bg)
 }
