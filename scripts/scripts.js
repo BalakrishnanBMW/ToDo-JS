@@ -10,13 +10,14 @@ let id = 0;
 
 
 const taskObjectBuilder = () => {
-    const {taskText, taskNote} = taskForm.elements;
+    const {taskText, category, taskNote} = taskForm.elements;
 
     let task = {
         "task" : taskText.value,
         "note" : taskNote.value,
         "id" : id++,
-        "status" : "pending"
+        "status" : "pending",
+		"category" : category.value || ""
     }
     return task;
 }
@@ -197,6 +198,7 @@ const editTask = (event) => {
     const editTask = taskList[keyToEdit]
     const taskText = editTask['task']
     const taskNote = editTask['note']
+	const category = editTask['category']
 
     const overlay = document.createElement("div");
     overlay.classList.add("overlay", "spread");
@@ -210,6 +212,11 @@ const editTask = (event) => {
     editTaskText.setAttribute("id", "editTaskText")
     editTaskText.setAttribute("value", taskText)
     editTaskContainer.append(editTaskText)
+
+    const editCategory = document.createElement("input")
+    editCategory.setAttribute("id", "editCategory")
+    editCategory.setAttribute("value", category)
+    editTaskContainer.append(editCategory)
 
     const editTaskNote = document.createElement("textarea")
     editTaskNote.setAttribute("id", "editTaskNote")

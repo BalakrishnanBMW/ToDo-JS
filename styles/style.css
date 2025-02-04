@@ -17,14 +17,17 @@
 #taskTextDiv, 
 #taskNoteDiv, 
 #actionButton,
-#editActionButton
+#editActionButton,
+#categoryDiv
 {
 	width : 50%;
 	min-width : 200px;
 	padding : 5px;
 }
 
-#taskTextDiv > input, #editTaskText {
+#taskTextDiv > input, #editTaskText,
+#categoryDiv > input, #editCategory
+{
 	padding : 5px;
 	font-size : 18px;
 	font-family : Roboto;
