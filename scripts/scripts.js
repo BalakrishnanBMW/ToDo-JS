@@ -4,6 +4,7 @@ const taskForm = document.forms.taskForm;
 const wrapper = document.getElementById("wrapper")
 const syncBtn = document.getElementById("syncBtn");
 const themeSelector = document.getElementById("themeSelector");
+const filter = document.getElementById("filters");
 let taskList = {};
 let id = 0;
 
@@ -19,6 +20,24 @@ const taskObjectBuilder = () => {
     }
     return task;
 }
+
+filter.addEventListener("click", (event) => {
+	const target = event.target;
+	if(target.tagName === "BUTTON") {
+		const filteredTaskList = filterTasks("status", target.id);
+		for (let task in filteredTaskList)
+			addTaskToUI(filteredTaskList[task]);
+	}
+})
+
+const filterTasks = (key, value) => {
+    tasks.innerHTML = ""
+	if(value === "allTasks") return taskList;
+    return Object.fromEntries(
+        Object.entries(taskList).filter(([taskId, task]) => task[key] === value)
+    );
+};
+
 const taskStatusUpdate = (event) => {
     const target = event.target;
     const task = target.closest(".task")
