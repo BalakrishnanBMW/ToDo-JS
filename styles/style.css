@@ -141,7 +141,7 @@ textarea {
 .filter {
     padding: 2px;
 }
-.filter > button {
+.filterButton {
     border-radius: 3px;
     padding: 3px;
 }

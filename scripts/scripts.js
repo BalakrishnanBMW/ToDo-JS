@@ -6,6 +6,8 @@ const syncBtn = document.getElementById("syncBtn");
 const themeSelector = document.getElementById("themeSelector");
 const filter = document.getElementById("filters");
 let taskList = {};
+let appTheme = "light"
+let categoryList = []
 let id = 0;
 
 
@@ -25,7 +27,14 @@ const taskObjectBuilder = () => {
 filter.addEventListener("click", (event) => {
 	const target = event.target;
 	if(target.tagName === "BUTTON") {
-		const filteredTaskList = filterTasks("status", target.id);
+		let param = target.dataset.param
+		let filteredTaskList = undefined;
+		if(param === "completed" || param === "pending" || param === "archieve") {
+			filteredTaskList = filterTasks("status", param);
+		}
+		else {
+			filteredTaskList = filterTasks("category", param);
+		}
 		for (let task in filteredTaskList)
 			addTaskToUI(filteredTaskList[task]);
 	}
@@ -67,6 +76,7 @@ const addTaskToUI = (taskObject) => {
     task.classList.add("task");
     task.dataset.id = taskObject.id
     task.dataset.status = taskObject.status
+	task.dataset.category = taskObject.category
 
     const main = document.createElement("div")
     main.classList.add("main");
@@ -148,10 +158,31 @@ const expandNote = (event) => {
     target.classList.toggle("fa-chevron-up")
 }
 
+const createFilterBtn = (category) => {
+	const filterBtn = document.createElement("button")
+	const filterDiv = document.createElement("div")
+	filterDiv.classList.add("filter")
+	filterBtn.dataset.param = category
+	filterBtn.id = category
+	filterBtn.innerText = category
+	filterBtn.classList.add("filterButton")
+	filterDiv.append(filterBtn)
+	filter.append(filterDiv)
+}
+
+const checkCategoryExists = (task) => {
+	let category = task.category
+	if(!categoryList.includes(category)){
+		categoryList.push(category)
+		createFilterBtn(category)
+	}
+}
+
 const addTask = (event) => {
     event.preventDefault();
 
     const task = taskObjectBuilder();
+	checkCategoryExists(task);
     addTaskToUI(task)
     // Object.assign(taskList,{ 
     //    [`task_${task.id}`] : task 
@@ -178,6 +209,7 @@ const deleteTask = (event) => {
 const saveToLocalStorage = (event) => {
     localStorage.setItem("taskList", JSON.stringify(taskList));
     localStorage.setItem("id", id)
+	localStorage.setItem("appState", JSON.stringify())
     // event.preventDefault();
 }
 
@@ -240,6 +272,7 @@ const editTask = (event) => {
     updateAction.addEventListener("click", function() {
 
         const updatedTaskText = document.getElementById("editTaskText").value;
+		const updateCategory = document.getElementById("editCategory").value;
         const updatedTaskNote = document.getElementById("editTaskNote").value;
 
         if(updatedTaskText === "") {
@@ -247,7 +280,7 @@ const editTask = (event) => {
             return;
         }
         
-        if(updatedTaskText === taskText && updatedTaskNote === taskNote) {
+        if(updatedTaskText === taskText && updatedTaskNote === taskNote && updateCategory === category) {
             return;
         }
     
@@ -255,6 +288,7 @@ const editTask = (event) => {
         editTask['note'] = updatedTaskNote
 
         updateOnUI(editTask, task)
+		checkCategoryExists(editTask);
     
         overlay.remove();
     })
