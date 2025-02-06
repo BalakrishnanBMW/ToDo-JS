@@ -9,6 +9,7 @@ let taskList = {};
 let appTheme = "light"
 let categoryList = []
 let id = 0;
+let categoryMap = {};
 
 
 const taskObjectBuilder = () => {
@@ -24,6 +25,29 @@ const taskObjectBuilder = () => {
     return task;
 }
 
+const addToCategoryMap = (task) => {
+	let key = task['category'];	
+	if(key in categoryMap) {
+		categoryMap[key] += 1;
+	}
+	categoryMap[key] = 1
+}
+
+const decreaseCategoryMapKey = (task) => {
+	let key = task['category'];
+	if(key in categoryMap) {
+		categoryMap[key] -= 1
+	}
+	if(categoryMap[key] == 0) {
+		removeFilterBtn(categoryMap[key])
+		delete categoryMap[key];
+	}
+}
+
+const removeFilterBtn = (key) => {
+	let category = categoryList.splice(categoryList.indexOf(key),1);
+}
+
 filter.addEventListener("click", (event) => {
 	const target = event.target;
 	if(target.tagName === "BUTTON") {
@@ -35,8 +59,10 @@ filter.addEventListener("click", (event) => {
 		else {
 			filteredTaskList = filterTasks("category", param);
 		}
-		for (let task in filteredTaskList)
+		for (let task in filteredTaskList) {
 			addTaskToUI(filteredTaskList[task]);
+			addToCategoryMap(filteredTaskList[task]);
+		}
 	}
 })
 
@@ -172,6 +198,7 @@ const createFilterBtn = (category) => {
 
 const checkCategoryExists = (task) => {
 	let category = task.category
+	console.log(category)
 	if(!categoryList.includes(category)){
 		categoryList.push(category)
 		createFilterBtn(category)
@@ -188,6 +215,7 @@ const addTask = (event) => {
     //    [`task_${task.id}`] : task 
     // })
     taskList[`task_${task.id}`] = task
+	addToCategoryMap(task);
 }
 
 const removeFromUI = (target) => {
@@ -195,6 +223,7 @@ const removeFromUI = (target) => {
     let keyToRemove = `task_${task.dataset.id}`
     
     task.remove()
+	decreaseCategoryMapKey(taskList[keyToRemove])
     delete taskList[keyToRemove]
 }
 
@@ -206,10 +235,17 @@ const deleteTask = (event) => {
 
 }
 
+const appState = () => {
+	return {
+		categoryList,
+		appTheme
+	}
+}
+
 const saveToLocalStorage = (event) => {
     localStorage.setItem("taskList", JSON.stringify(taskList));
     localStorage.setItem("id", id)
-	localStorage.setItem("appState", JSON.stringify())
+	localStorage.setItem("appState", JSON.stringify(appState()))
     // event.preventDefault();
 }
 
@@ -217,8 +253,13 @@ const getFromLocalStorage = (event) => {
     tasks.innerHTML = ""
     id = localStorage.getItem("id") || 1
     taskList = JSON.parse(localStorage.getItem("taskList")) || {};
+	appTheme = JSON.parse(localStorage.getItem("appState"))["appTheme"] || "light"
+    document.documentElement.setAttribute("data-theme", appTheme);
+	themeSelector.value = appTheme
+	categoryList = JSON.parse(localStorage.getItem("appState"))["categoryList"] || [] ;
     for (let task in taskList) {
         addTaskToUI(taskList[task])
+		addToCategoryMap(taskList[task]);
     }
 }
 
@@ -228,6 +269,7 @@ const editTask = (event) => {
     let keyToEdit = `task_${task.dataset.id}`
 
     const editTask = taskList[keyToEdit]
+	const oldTask = editTask;
     const taskText = editTask['task']
     const taskNote = editTask['note']
 	const category = editTask['category']
@@ -286,9 +328,12 @@ const editTask = (event) => {
     
         editTask['task'] = updatedTaskText
         editTask['note'] = updatedTaskNote
+		editTask['category'] = updateCategory
 
         updateOnUI(editTask, task)
 		checkCategoryExists(editTask);
+		addToCategoryMap(editTask);
+		decreaseCategoryMapKey(oldTask);
     
         overlay.remove();
     })
@@ -310,6 +355,7 @@ const updateOnUI = (editTask, task) => {
 
 function applyTheme(event) {
 	const theme = event.target.value;
+	appTheme = theme;
     document.documentElement.setAttribute("data-theme", theme);
 }
 
